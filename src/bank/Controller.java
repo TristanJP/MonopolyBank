@@ -7,11 +7,12 @@ import interfaces.*;
 /**
  * Controls the bank account program and user interaction
  * @author trisp
- * @version 1.1
+ * @version 1.2
  * 
  * Changelog:
  * 1.0 - Made first working instance of controller
  * 1.1 - Added logic to check whether players are valid before adding, removing and transferring. Added all comment/docs
+ * 1.2 - Added logic to test player names and indexes.
  *
  */
 
@@ -234,16 +235,7 @@ public class Controller {
 	 * @return A string stating that the money was transferred
 	 */
 	public String transferMoney(String playerTo, String playerFrom, int amount3) {
-		boolean playerToValid = false, playerFromValid = false;
-		for (Player player : players) {
-			if (player.equals(playerTo)) {
-				playerToValid = true;
-			}
-			if (player.equals(playerFrom)) {
-				playerFromValid = true;
-			}
-		}
-		if (playerToValid && playerFromValid) {
+		if (checkIfPlayerNameValid(playerTo) != null && checkIfPlayerNameValid(playerFrom) != null ) {
 			removeMoneyFromAccount(playerFrom, amount3);
 			addMoneyToAccount(playerTo, amount3);
 			return "Money Transferred from " + playerFrom + " to " + playerTo + ".";
@@ -251,6 +243,67 @@ public class Controller {
 		else {
 			return "Invalid player/s";
 		}
+	}
+
+	/**
+	 * Increases the given players money by 200 for passing Go.
+	 * @param player Player that passed Go
+	 * @return A string stating that the player gets 200 for passing Go.
+	 */
+	public String playerPassGo(String player) {
+		Player playGo = checkIfPlayerNameValid(player);
+		if (playGo != null) {
+			playGo.addMoneyToAccount(200);
+			return player + " gets 200 for passing Go!";
+		}
+		else {
+			return "Invalid Player.";
+		}
+	}
+
+	/**
+	 * Increases the given players money by 200 for passing Go.
+	 * @param index Index of the player that passed Go
+	 * @return A string stating that the player gets 200 for passing Go.
+	 */
+	public String playerPassGo(int index) {
+		Player playGo = checkIfPlayerIndexValid(index);
+		if (playGo != null) {
+			playGo.addMoneyToAccount(200);
+			return playGo.getName() + " gets 200 for passing Go!";
+		}
+		else {
+			return "Invalid Player.";
+		}
+	}
+
+	/**
+	 * Checks whether the player index provided is valid
+	 * @param index the player index being tested
+	 * @return the player object if its valid, otherwise null
+	 */
+	private Player checkIfPlayerIndexValid(int index) {
+		if (index < players.size() && index >= 0) {
+			return players.get(index);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Checks whether the given playerName is a valid player
+	 * @param playerName The name being tested
+	 * @return the player if the name is valid, otherwise null
+	 */
+	private Player checkIfPlayerNameValid(String playerName) {
+		Player playerValid = null;
+		for (Player player : players) {
+			if (player.getName().equals(playerName)) {
+				playerValid = player;
+			}
+		}
+		return playerValid;
 	}
 
 }
