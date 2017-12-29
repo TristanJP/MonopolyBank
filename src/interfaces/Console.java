@@ -7,15 +7,36 @@ import bank.Player;
 /**
  * A simple text-based user interface for the Monopoly Bank.
  * @author trisp
- * @version 1.0
+ * @version 1.1
+ * 
+ * Changelog:
+ * 1.0 - Created full base of console
+ * 1.1 - Moved logic to check if players are valid outside of console. Added try/catch to stop crashes. Added docs/comments
  */
 
 public class Console {
 
-	private Controller controller;  
+	//FIELDS
+	/**
+	 * The controller running the game
+	 */
+	private Controller controller; 
+	/**
+	 * The Scanner for taking user input
+	 */
 	private Scanner stdIn;
+	/**
+	 * A boolean which shows whether the game is currently being set up or is in play
+	 */
 	private boolean gameStarted;
 
+
+	//CONSTRUCTOR
+
+	/**
+	 * Constructor for Console, contains main loop
+	 * @param controller
+	 */
 	public Console(Controller controller) {
 
 		this.controller = controller;
@@ -35,6 +56,9 @@ public class Console {
 			}		
 		}
 	}
+
+	//METHODS
+
 
 	/**
 	 * Obtain user input for start menu
@@ -98,14 +122,26 @@ public class Console {
 		display(startMenu());
 	}
 
+	/**
+	 * Gets a formatted string of all players in game under Players heading
+	 * @return A formatted string of all players in game
+	 */
 	private String startPlayers() {
 		return "Players:\n" + controller.getPlayersNames();
 	}
-	
+
+	/**
+	 * Gets a formatted string of all players and the ammount of money the have under Players heading
+	 * @return a formatted string of players and their money
+	 */
 	private String players() {
 		return "Players:\n" + controller.getPlayersNamesAndMoney();
 	}
 
+	/**
+	 * Prints the start menu
+	 * @return A formatted string of the start menu
+	 */
 	private String startMenu() {
 		return "Enter the number associated with your chosen menu option.\n" +
 				"1: Add players to the game.\n" +
@@ -126,19 +162,19 @@ public class Console {
 			String input = stdIn.nextLine();
 			String[] inputArr = input.split(" ");
 			String player = inputArr[0];
-			int amount = Integer.parseInt(inputArr[1]);
-			if (!playerNameValid(inputArr[0])) {
-				int playerIndex = Integer.parseInt(player);
-				playerIndex--;
-				if (playerIndex > controller.getPlayers().size() || playerIndex < 0) {
-					display("Invalid player");
-				}
-				else {
+			try {
+				int amount = Integer.parseInt(inputArr[1]);
+				try {
+					int playerIndex = Integer.parseInt(player);
+					playerIndex--;
 					display(controller.addMoneyToAccount(playerIndex, amount));
 				}
+				catch (NumberFormatException nfe) {
+					display(controller.addMoneyToAccount(player, amount));
+				}
 			}
-			else {
-				display(controller.addMoneyToAccount(player, amount));
+			catch (NumberFormatException nfe) {
+				display("Invalid amount");
 			}
 			break;
 		case "2" : // Remove money from an account
@@ -146,19 +182,19 @@ public class Console {
 			String input2 = stdIn.nextLine();
 			String[] inputArr2 = input2.split(" ");
 			String player2 = inputArr2[0];
-			int amount2 = Integer.parseInt(inputArr2[1]);
-			if (!playerNameValid(inputArr2[0])) {
-				int playerIndex = Integer.parseInt(player2);
-				playerIndex--;
-				if (playerIndex > controller.getPlayers().size() || playerIndex < 0) {
-					display("Invalid player");
-				}
-				else {
+			try {
+				int amount2 = Integer.parseInt(inputArr2[1]);
+				try {
+					int playerIndex = Integer.parseInt(player2);
+					playerIndex--;
 					display(controller.removeMoneyFromAccount(playerIndex, amount2));
 				}
+				catch (NumberFormatException nfe) {
+					display(controller.removeMoneyFromAccount(player2, amount2));
+				}
 			}
-			else {
-				display(controller.removeMoneyFromAccount(player2, amount2));
+			catch (NumberFormatException nfe) {
+				display("Invalid amount");
 			}
 			break;
 		case "3" : // Transfer money from one account to another
@@ -167,22 +203,21 @@ public class Console {
 			String[] inputArr3 = input3.split(" ");
 			String playerFrom = inputArr3[0];
 			String playerTo = inputArr3[1];
-			int amount3 = Integer.parseInt(inputArr3[2]);
-			if (!playerNameValid(inputArr3[0])) {
-				int playerToIndex = Integer.parseInt(playerTo);
-				playerToIndex--;
-				int playerFromIndex = Integer.parseInt(playerFrom);
-				playerFromIndex--;
-				if ((playerToIndex > controller.getPlayers().size() || playerToIndex < 0) && (playerFromIndex > controller.getPlayers().size() || playerFromIndex < 0)) {
-					display("Invalid player");
-				}
-				else {
+			try {
+				int amount3 = Integer.parseInt(inputArr3[2]);
+				try {
+					int playerToIndex = Integer.parseInt(playerTo);
+					playerToIndex--;
+					int playerFromIndex = Integer.parseInt(playerFrom);
+					playerFromIndex--;
 					display(controller.transferMoney(playerToIndex, playerFromIndex, amount3));
 				}
+				catch (NumberFormatException nfe) {
+					display(controller.transferMoney(playerTo, playerFrom, amount3));
+				}
 			}
-			else {
-				display(controller.transferMoney
-						(playerTo, playerFrom, amount3));
+			catch (NumberFormatException nfe) {
+				display("Invalid amount");
 			}
 			break;
 		case "4" : // Exits the application
@@ -194,6 +229,11 @@ public class Console {
 		}
 	}
 
+	/**
+	 * Checks whether the playerName provided is in the list of players
+	 * @param playerName The name of the player being tested
+	 * @return boolean true if player name is valid and in the game
+	 */
 	private boolean playerNameValid(String playerName) {
 		for (Player player : controller.getPlayers()) {
 			if (player.getName().equals(playerName)) {
@@ -203,7 +243,7 @@ public class Console {
 		return false;
 	}
 
-	/*
+	/**
 	 * Returns a string representation of a brief title for this application as the header.
 	 * @return	a header
 	 */
@@ -223,7 +263,7 @@ public class Console {
 				"4: Exit this application.\n";
 	}
 
-	/*
+	/**
 	 * Displays the specified info for the user to view.
 	 * @param info	info to be displayed on the screen
 	 */
@@ -231,7 +271,7 @@ public class Console {
 		System.out.println(info);
 	}
 
-	/*
+	/**
 	 * Returns an error message for an unrecognised command.
 	 * 
 	 * @param error the unrecognised command
