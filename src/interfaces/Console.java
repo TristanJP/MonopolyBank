@@ -162,19 +162,24 @@ public class Console {
 			String input = stdIn.nextLine();
 			String[] inputArr = input.split(" ");
 			String player = inputArr[0];
-			try {
-				int amount = Integer.parseInt(inputArr[1]);
+			if (inputArr.length < 2) {
+				display("Invalid number of args");
+			}
+			else {
 				try {
-					int playerIndex = Integer.parseInt(player);
-					playerIndex--;
-					display(controller.addMoneyToAccount(playerIndex, amount));
+					int amount = Integer.parseInt(inputArr[1]);
+					try {
+						int playerIndex = Integer.parseInt(player);
+						playerIndex--;
+						display(controller.addMoneyToAccount(playerIndex, amount));
+					}
+					catch (NumberFormatException nfe) {
+						display(controller.addMoneyToAccount(player, amount));
+					}
 				}
 				catch (NumberFormatException nfe) {
-					display(controller.addMoneyToAccount(player, amount));
+					display("Invalid amount");
 				}
-			}
-			catch (NumberFormatException nfe) {
-				display("Invalid amount");
 			}
 			break;
 		case "2" : // Remove money from an account
@@ -182,42 +187,52 @@ public class Console {
 			String input2 = stdIn.nextLine();
 			String[] inputArr2 = input2.split(" ");
 			String player2 = inputArr2[0];
-			try {
-				int amount2 = Integer.parseInt(inputArr2[1]);
+			if (inputArr2.length < 2) {
+				display("Invalid number of args");
+			}
+			else {
 				try {
-					int playerIndex = Integer.parseInt(player2);
-					playerIndex--;
-					display(controller.removeMoneyFromAccount(playerIndex, amount2));
+					int amount2 = Integer.parseInt(inputArr2[1]);
+					try {
+						int playerIndex = Integer.parseInt(player2);
+						playerIndex--;
+						display(controller.removeMoneyFromAccount(playerIndex, amount2));
+					}
+					catch (NumberFormatException nfe) {
+						display(controller.removeMoneyFromAccount(player2, amount2));
+					}
 				}
 				catch (NumberFormatException nfe) {
-					display(controller.removeMoneyFromAccount(player2, amount2));
+					display("Invalid amount");
 				}
-			}
-			catch (NumberFormatException nfe) {
-				display("Invalid amount");
 			}
 			break;
 		case "3" : // Transfer money from one account to another
 			display("Name both players and amount to transfer.");
 			String input3 = stdIn.nextLine();
 			String[] inputArr3 = input3.split(" ");
-			String playerFrom = inputArr3[0];
-			String playerTo = inputArr3[1];
-			try {
-				int amount3 = Integer.parseInt(inputArr3[2]);
+			if (inputArr3.length < 3) {
+				display("Invalid number of args");
+			}
+			else {
+				String playerFrom = inputArr3[0];
+				String playerTo = inputArr3[1];
 				try {
-					int playerToIndex = Integer.parseInt(playerTo);
-					playerToIndex--;
-					int playerFromIndex = Integer.parseInt(playerFrom);
-					playerFromIndex--;
-					display(controller.transferMoney(playerToIndex, playerFromIndex, amount3));
+					int amount3 = Integer.parseInt(inputArr3[2]);
+					try {
+						int playerToIndex = Integer.parseInt(playerTo);
+						playerToIndex--;
+						int playerFromIndex = Integer.parseInt(playerFrom);
+						playerFromIndex--;
+						display(controller.transferMoney(playerToIndex, playerFromIndex, amount3));
+					}
+					catch (NumberFormatException nfe) {
+						display(controller.transferMoney(playerTo, playerFrom, amount3));
+					}
 				}
 				catch (NumberFormatException nfe) {
-					display(controller.transferMoney(playerTo, playerFrom, amount3));
+					display("Invalid amount");
 				}
-			}
-			catch (NumberFormatException nfe) {
-				display("Invalid amount");
 			}
 			break;
 		case "4" : // Exits the application
