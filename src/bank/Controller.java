@@ -30,7 +30,7 @@ public class Controller {
 	/**
 	 * controller
 	 */
-	private static Controller cont;
+	public static Controller cont;
 
 	//CONSTRUCTOR
 	/**
@@ -38,7 +38,7 @@ public class Controller {
 	 */
 	public Controller() {
 		players = new ArrayList();
-		console = new Console(this);
+		//console = new Console(this);
 	}
 
 	//MAIN
@@ -296,7 +296,7 @@ public class Controller {
 	 * @param playerName The name being tested
 	 * @return the player if the name is valid, otherwise null
 	 */
-	private Player checkIfPlayerNameValid(String playerName) {
+	public Player checkIfPlayerNameValid(String playerName) {
 		Player playerValid = null;
 		for (Player player : players) {
 			if (player.getName().equals(playerName)) {
@@ -304,6 +304,14 @@ public class Controller {
 			}
 		}
 		return playerValid;
+	}
+	
+	/**
+	 * Gets the number of players in the game currently
+	 * @return number of players
+	 */
+	public int getNumberOfPlayers() {
+		return players.size();
 	}
 
 }
