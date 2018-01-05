@@ -3,9 +3,8 @@ package interfaces;
 import javax.swing.*;
 
 import bank.Controller;
-import swing.GameFrame;
-import swing.PlayersFrame;
-
+import swing.MenuFrame;
+import swing.PlayFrame;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -23,9 +22,11 @@ public class GUI {
 
 	//FIELDS
 	private static GUI g = null;
-	public JFrame playersFrame, gameFrame;
+	public MenuFrame menuFrame;
+	public PlayFrame playFrame;
 
-	private GUI() {
+	//CHANGE BACK TO PRIVATE AFTER TESTING
+	public GUI() {
 
 	}
 
@@ -35,32 +36,25 @@ public class GUI {
 		}
 		return g;
 	}
-
+	
 	public static void main(String[] args) {
-
 		getGUI();
 		
 		Controller cont = new Controller();
-
-		g.playersFrame = new PlayersFrame("Monopoly Bank", cont, getGUI());
-		g.playersFrame.setSize(640, 420);
-		g.playersFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		g.playersFrame.setResizable(false);
-		g.playersFrame.setVisible(true);
-		
-		g.gameFrame = new GameFrame("Monopoly Bank", cont, getGUI());
-		g.gameFrame.setSize(640, 420);
-		g.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		g.gameFrame.setResizable(false);
-		g.gameFrame.setVisible(false);
-
-	}
-
-
-	static class Action implements ActionListener{
-		public void actionPerformed (ActionEvent e) {
-
-		}
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					g.menuFrame = new MenuFrame(cont, getGUI());
+					g.menuFrame.setTitle("Monopoly Bank");
+					g.menuFrame.setVisible(true);
+					g.playFrame = new PlayFrame(cont, getGUI());
+					g.playFrame.setTitle("Monopoly Bank");
+					g.playFrame.setVisible(false);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 }
