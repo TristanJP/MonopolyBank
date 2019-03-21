@@ -27,10 +27,6 @@ public class Controller {
 	 * console for user interaction
 	 */
 	private Console console;
-	/**
-	 * controller
-	 */
-	public static Controller cont;
 
 	//CONSTRUCTOR
 	/**
@@ -39,11 +35,6 @@ public class Controller {
 	public Controller() {
 		players = new ArrayList();
 		//console = new Console(this);
-	}
-
-	//MAIN
-	public static void main(String[] args) {
-		cont = new Controller();
 	}
 
 	//METHODS

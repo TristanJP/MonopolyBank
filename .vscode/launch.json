@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Java Console App",
+            "request": "launch",
+            "mainClass": "interfaces.Console",
+            "projectName": "MonopolyBank",
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - GUI",
+            "request": "launch",
+            "mainClass": "interfaces.GUI",
+            "projectName": "MonopolyBank"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Controller",
+            "request": "launch",
+            "mainClass": "bank.Controller",
+            "projectName": "MonopolyBank"
+        }
+    ],
+}

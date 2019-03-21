@@ -20,7 +20,11 @@ public class Console {
 	/**
 	 * The controller running the game
 	 */
-	private Controller controller; 
+	private static Controller controller; 
+	/**
+	 * The console
+	 */
+	private static Console console; 
 	/**
 	 * The Scanner for taking user input
 	 */
@@ -30,6 +34,10 @@ public class Console {
 	 */
 	private boolean gameStarted;
 
+	//MAIN
+	public static void main(String[] args) {
+		console = new Console(new Controller());
+	}
 
 	//CONSTRUCTOR
 
